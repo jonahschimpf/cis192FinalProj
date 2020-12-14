@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+ 
+<div class="topnav">
+  <a class="active" href="{% url 'home'%}">Piazza</a>
+  <a href="{% url 'new_home'%}">New</a>
+  <a href="{% url 'past_home'%}">Past</a>
+  <a href="{% url 'submit'%}">Submit</a>
+  <a href="{% url 'statistics' %}">Statistics</a>
+ 
+  {% if request.user.is_authenticated %}
+    <div class="topnav-right">
+      <a href="{% url 'signout' %}">Sign Out </a>
+    </div>
+  {% else %}
+    <div class="topnav-right">
+      <a href="{% url 'signin' %}">Sign In </a>
+    </div>
+  {% endif %}
+</div>
+ 
+<p> <h5><a href = "{% url 'user_info' comment.creator.username %}">{{comment.creator.username}}</a> | On : <a href = "{% url 'post' post.id %}">{{post.title}}</a></h5></p>
+<p>{{comment.content}}</p>
+ 
+<form method ='post'>
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" class="btn btn-primary" value = "Submit">
+</form>
+{% endblock %}

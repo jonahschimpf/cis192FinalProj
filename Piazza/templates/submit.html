@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+ 
+ 
+<div class="topnav">
+    <a class="active" href="{% url 'home'%}">Piazza</a>
+    {% if request.user.is_authenticated %}
+      <div class="topnav-right">
+        <a href="{% url 'signout' %}">Sign Out </a>
+      </div>
+    {% else %}    
+      <div class="topnav-right">
+        <a href="{% url 'signin' %}">Sign In</a>
+      </div>
+    {% endif %}
+</div>
+ 
+ 
+<div class="w3-panel w3-light-grey w3-leftbar w3-border-grey">
+<form method ='post'>
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value = "Submit">
+</form>
+</div>
+{% endblock %}

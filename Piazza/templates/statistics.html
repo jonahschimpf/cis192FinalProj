@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="topnav">
+    <a class="active" href="{% url 'home'%}">Piazza</a>
+    <a href="{% url 'new_home'%}">New</a>
+    <a href="{% url 'past_home'%}">Past</a>
+    <a href="{% url 'submit'%}">Submit</a>
+    <a href="{% url 'statistics' %}">Statistics</a>
+   
+    {% if request.user.is_authenticated %}
+      <div class="topnav-right">
+        <a href="{% url 'signout' %}">Sign Out </a>
+      </div>
+    {% else %}
+      <div class="topnav-right">
+        <a href="{% url 'signin' %}">Sign In </a>
+      </div>
+    {% endif %}
+  </div>
+<body>
+  {% autoescape off %}
+  {{ plot_div1 }}
+  {% endautoescape %}
+  {% autoescape off %}
+  {{ plot_div2 }}
+  {% endautoescape %}
+  {% autoescape off %}
+  {{ plot_div3 }}
+  {% endautoescape %}
+  {% autoescape off %}
+  {{ plot_div4 }}
+  {% endautoescape %}
+</body>
+{% endblock %}

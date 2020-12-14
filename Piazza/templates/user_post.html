@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+ 
+<div class="topnav">
+  <a class="active" href="{% url 'home'%}">Piazza</a>
+  <a href="{% url 'new_home'%}">New</a>
+  <a href="{% url 'past_home'%}">Past</a>
+  <a href="{% url 'submit'%}">Submit</a>
+ 
+  {% if request.user.is_authenticated %}
+    <div class="topnav-right">
+      <a href="{% url 'signout' %}">Sign Out </a>
+    </div>
+  {% else %}
+    <div class="topnav-right">
+      <a href="{% url 'signin' %}">Sign In </a>
+    </div>
+  {% endif %}
+</div>
+ 
+<ol class="list-group">
+{%for post in posts%}
+  <li class="list-group-item"><p><a href = "{{post.url}}">{{post.title}}</a></p>
+  <p>{{post.votes}} | Created {{post.created_on}}| <a href = "{% url 'user_info' post.creator.username %}">{{post.creator.username}}</a> | <a href="{% url 'post' post.id %}"> {{post.comments}} Comments</a></p></li>
+{% endfor %}
+</ol>
+{% endblock %}

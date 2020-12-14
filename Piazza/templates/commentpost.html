@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block content %}
+ 
+<div class="topnav">
+  <a class="active" href="{% url 'home'%}"> Piazza</a>
+  <a href="{% url 'new_home'%}">New</a>
+  <a href="{% url 'past_home'%}">Past</a>
+  <a href="{% url 'submit'%}">Submit</a>
+  <a href="{% url 'statistics'%}">Statistics</a>
+ 
+  {% if request.user.is_authenticated %}
+    <div class="topnav-right">
+      <a href="{% url 'signout' %}">Sign Out </a>
+    </div>
+  {% else %}
+    <div class="topnav-right">
+      <a href="{% url 'signin' %}">Sign In </a>
+    </div>
+  {% endif %}
+</div>
+ 
+<div class="w3-panel w3-light-grey w3-leftbar w3-border-grey">
+<p><a href = "{{post.url}}"><strong>Title: {{post.title}}</strong></a></p>
+{% if post.creator == request.user%}
+<p>{{post.votes}} votes | Created {{post.created_on}}| <a href = "{% url 'user_info' post.creator.username %}">{{post.creator.username}}</a> | {{post.comments}} Comments | <a href="{% url 'edit' post.id %}"> Edit</a></p>
+{%else %}
+<p>{{post.votes}} votes | Created {{post.created_on}}| <a href = "{% url 'user_info' post.creator.username %}">{{post.creator.username}}</a> | {{post.comments}} Comments</p>
+{% endif %}
+<p><strong>Description: </strong>{{post.description}}</p>
+ 
+ 
+ 
+<form method ='post'>
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" class="btn btn-primary" value = "Submit">
+</form>
+<br>
+</div>
+ 
+<ul class="list-group">
+  {% for comment in comments %}
+  {% if comment.identifier %}
+  <li class="list-group-item list-group-item-secondary">
+    <p class="ex1" style="font-family:helvetica;" style="color:black"><a href = "{% url 'user_info' comment.creator.username %}">Comment by: {{comment.creator.username}}</a> |  Level of comment: {{comment.identifier}}</p>
+    <p class="ex1" style="font-family:helvetica;" style="color:black"><strong>{{comment.content}}</strong></p>
+    <p class="ex1" style="font-family:helvetica;" style="color:black"><a href = "{% url 'reply' id1=post.id id2=comment.id %}">reply</a></p>
+  </li>
+  {% else %}
+  <div class="list-group-item list-group-item-primary">
+  <p style="font-family:helvetica;" style="color:black"><a href = "{% url 'user_info' comment.creator.username %}">Comment by: {{comment.creator.username}}</a> | Level of comment: {{comment.identifier}}</p>
+  <p style="font-family:helvetica;" style="color:black"><strong>{{comment.content}}</strong></p>
+  <p style="font-family:helvetica;" style="color:black"><a href = "{% url 'reply' id1=post.id id2=comment.id %}">reply</a></p>
+  </div>
+{% endif %}
+{% endfor %}
+</div>
+
+
+{% endblock %}

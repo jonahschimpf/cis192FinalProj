@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+ 
+<div class="topnav">
+  <a class="active" href="{% url 'home'%}">Hacker News</a>
+  <a href="{% url 'new_home'%}">New</a>
+  <a href="{% url 'past_home'%}">Past</a>
+  <a href="{% url 'submit'%}">Submit</a>
+  <a href="{% url 'statistics' %}">Statistics</a>
+</div>
+ 
+<form method ='post'>
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value = "Submit">
+</form>
+<br>
+ 
+<h3>Already Have an Account?</h3>
+<a href = "{% url 'signin' %}">Sign In Here, Its free!</a>
+ 
+{% endblock %}
